@@ -10,29 +10,29 @@ Features
 Installation
 1.	Clone the repository:
 
-`git clone https://github.com/username/copal.git`
+`$ git clone https://github.com/username/copal.git`
 
 2.	Navigate to the project directory:
 
-`cd copal`
+`$ cd copal`
 
 3.	Create and activate a virtual environment:
 
-`python3 -m venv .env`
-`source .env/bin/activate`  # For MacOS/Linux
-`.env\Scripts\activate`     # For Windows
+`$ python3 -m venv .env`
+`$ source .env/bin/activate`  # For MacOS/Linux
+`$.env\Scripts\activate`     # For Windows
 
 4.	Install the required dependencies:
 
-`pip install -r requirements.txt`
+`$ pip install -r requirements.txt`
 
 5.	(Optional) Apply the database migrations:
 
-`python manage.py migrate`
+`$ python manage.py migrate`
 
 6.	Run the development server:
 
-`python manage.py runserver`
+`$ python manage.py runserver`
 
 The project will be accessible at http://127.0.0.1:8000.
 
