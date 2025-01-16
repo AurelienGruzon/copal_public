@@ -17,21 +17,23 @@ Copal Manager is a web application designed to simplify contract management for 
 
 		cd copal
 
-3.	Create and activate a virtual environment:
+3.1	Create a virtual environment:
 
 		python3 -m venv .env
-		source .env/bin/activate  # For MacOS/Linux
-		.env\Scripts\activate     # For Windows
+3.2.a
+		`source .env/bin/activate`  # For MacOS/Linux
+3.2.b
+		`.env\Scripts\activate`     # For Windows
 
-4.	Install the required dependencies:
+5.	Install the required dependencies:
 
 		pip install -r requirements.txt
 
-5.	(Optional) Apply the database migrations:
+6.	(Optional) Apply the database migrations:
 
 		python manage.py migrate
 
-6.	Run the development server:
+7.	Run the development server:
 
 		python manage.py runserver
 
