@@ -1,0 +1,10 @@
+{% extends 'copal_manager/base.html' %}
+{% block content %}
+<h1>Liste des Propriétaires</h1>
+<ul>
+{% for proprietaire in proprietaires %}
+<li><a href="{% url 'detail-proprietaire' proprietaire.id %}">{{ proprietaire.nom }}, {{ proprietaire.prenom }}</a></li>
+{% endfor %}
+<li><a href="{% url 'create-proprietaire' %}">- Creer Proprietaire -</a></li>
+</ul>
+{% endblock %}

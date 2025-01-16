@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <title>Copal Manager</title>
+    <link rel="stylesheet" href="{% static 'copal_manager/styles.css' %}">
+  </head>
+  <body>
+    <nav>
+      <ul class="menu">
+      <li><a href="{% url 'liste-proprietaires' %}">Proprietaires</a></li>
+      <li><a href="{% url 'liste-contrats' %}">Contrats</a></li>
+      <li><a href="{% url 'liste-biens-immobiliers' %}">Biens Immo</a></li>
+    </nav>
+ <div class="block_content">
+      {% block content %} {% endblock %}
+ </div>
+ 
+  </body>
+</html>

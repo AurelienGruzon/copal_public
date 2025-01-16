@@ -1,0 +1,10 @@
+{% extends 'copal_manager/base.html' %}
+{% block content %}
+<h1>Liste des Biens Immobliers</h1>
+<ul>
+{% for bien_immobilier in biens_immobiliers %}
+<li><a href="{% url 'detail-bien-immobilier' bien_immobilier.id %}">{{ bien_immobilier }}</a></li>
+{% endfor %}
+<li><a href="{% url 'create-bien-immobilier' %}">- Créer Bien Immobilier -</a></li>
+</ul>
+{% endblock %}

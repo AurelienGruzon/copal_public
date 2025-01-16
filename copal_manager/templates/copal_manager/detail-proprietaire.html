@@ -1,0 +1,22 @@
+{% extends 'copal_manager/base.html' %}
+{% block content %}
+<h1>{{ proprietaire.civilite }} {{ proprietaire.nom }}, {{ proprietaire.prenom }}</h1>
+<ul>
+  <li>Telephone : {{ proprietaire.telephone }}</li>
+  <li>Email : {{ proprietaire.email }}</li>
+  <li>Adresse : {{ proprietaire.adresse }}, {{ proprietaire.code_postal }} {{ proprietaire.ville }}</li>
+</ul>
+<h2>Contrats associés:</h2>
+<ul>
+{% for contrat in contrats %}
+<li><a href="{% url 'detail-contrat' contrat.id %}">{{ contrat }}</a></li>
+{% endfor %}
+</ul>
+<h2>Biens Immobiliers associés:</h2>
+<ul>
+{% for bien_immobilier in biens_immobiliers %}
+<li><a href="{% url 'detail-bien-immobilier' bien_immobilier.id %}">{{ bien_immobilier }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

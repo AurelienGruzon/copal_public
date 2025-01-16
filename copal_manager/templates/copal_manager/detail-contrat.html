@@ -1,0 +1,19 @@
+{% extends 'copal_manager/base.html' %}
+{% load static %}
+{% block content %}
+<h1>{{ contrat.proprietaire }}</h1>
+<ul>
+    <li>Id base de donnée :  {{ contrat.id }}</li>
+    <li>Numéro de contrat: {{ contrat.numero_contrat }}</li>
+    <li>Date de début : {{ contrat.date_debut }}</li>
+    <li>Date de fin:  {{ contrat.date_fin }}</li>
+    <li>Frais de Gestion (%) {{ contrat.frais_gestion }}</li>
+</ul>
+
+<!-- Template HTML -->
+<form action="{% url 'generer-contrat' contrat.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Voir Contrat</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'copal_manager/base.html' %}
+{% block content %}
+<h1>{{ bien_immobilier.nom }}</h1>
+<ul>
+    <li>{{ bien_immobilier.adresse }}, {{ bien_immobilier.code_postal }}, {{ bien_immobilier.ville }}</li>
+    <li>Surface : {{ bien_immobilier.surface }} m2</li>
+    <li>Type de bien : {{ bien_immobilier.type_bien }}</li>
+    <li>Propriétaire : {{ bien_immobilier.proprietaire }}</li>
+</ul>
+{% endblock %}

@@ -1,0 +1,228 @@
+{% extends 'copal_manager/base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- Bouton pour générer le PDF -->
+<button onclick="generatePDF()" class="btn btn-primary">Télécharger en PDF</button>
+
+<script>
+    function generatePDF() {
+        // Récupère le HTML de la page actuelle
+        const tableContent = document.getElementById('contratPdf');
+        const htmlContent = tableContent.outerHTML;
+        // Envoie le HTML au serveur via une requête POST
+        fetch("{% url 'generate_pdf' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({ html: htmlContent })
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            // Crée une URL temporaire pour télécharger le PDF
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "contrat.pdf";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .catch(error => console.error('Erreur lors de la génération du PDF :', error));
+    }
+</script>
+
+<table id = "contratPdf">
+    <!-- Logo -->
+
+    <tr><td colspan="2"><h1>Contrat de Conciergerie - La Conciergerie Paloise</h1></td></tr>
+    <!--
+    <tr>
+        <td colspan="2">
+            <img src="{% static './copal_manager/logo.png' %}" alt="Logo" class="logo">
+        </td>
+    </tr>
+    -->
+
+    <tr><td><p>Contrat n°: {{ contrat.numero_contrat }}</p></td></tr>
+    <!-- Parties du Contrat -->
+    <tr> 
+        <div class="contenu_contrat">
+            <td colspan="2"><h2>I-Parties :</h2></td>
+    </tr>
+    <tr>
+        <!-- Partie Prestataire -->
+        <td>
+            <div class="partie">
+                <h2>Prestataire:</h2>
+                <p>Texte Descriptif de la société</p>
+                <p>ci-après dénommée « le Prestataire de services » ou « le Prestataire », d’une part,</p>
+            </div>
+        </td>
+        
+        <!-- Partie Client -->
+        <td>
+            <div class="partie">
+                <h2>Client:</h2>
+                <ul>
+                    <li>{{ proprietaire.civilite }} {{ proprietaire }}</li>
+                    <li>{{ proprietaire.adresse }}</li>
+                    <li>{{ proprietaire.code_postal }} {{ proprietaire.ville }}</li>
+                    <li>{{ proprietaire.telephone }}</li>
+                    <li>{{ proprietaire.email }}</li>
+                    {% if proprietaire.siret %}
+                        <li>SIRET : {{ proprietaire.siret }}</li>
+                    {% endif %}
+                </ul>
+                <p>ci-après dénommée « le Client », d’autre part,</p>
+            </div>
+        </td>
+    </tr>
+
+    <!-- Corps du contrat -->
+    <tr>
+        <td colspan="2">
+            <div class="contenu_contrat">
+                <p>Il a été convenu ce qui suit :</p>
+                <p>Le présent contrat régit les conditions dans lesquelles le Prestataire fournit des prestations de services de conciergerie, de ménage, d’intendance, de valorisation commerciale et de prise en charge du bien immobilier appartenant au client, que ce dernier loue par l’intermédiaire de plateformes de réservation en ligne, que le prestataire sélectionne avec l’accord du client.</p>
+
+                <h2>II-Tarifs :</h2>
+                <p>La formule proposée par le Prestataire au Client inclut les services suivants :</p>
+                <ul>
+                    <li>Création complète de votre annonce et mise en ligne sur les plateformes de réservation</li>
+                    <li>Page web personnalisée : destinée à accompagner vos voyageurs tout au long de leur séjour</li>
+                    <li>Gestion des prestations de ménage</li>
+                    <li>Gestion de l’intendance de votre bien (intervention d’artisans etc...)</li>
+                    <li>Accompagnement et conseils en décoration et Home-Staging (sur devis)</li>
+                    <li>Arrivée autonome de vos voyageurs : boîte à clefs</li>
+                    <li>Dépannage, assistance et échange à votre profit et à celui de vos voyageurs 7j/7</li>
+                    <li>Gestion de la blanchisserie (linge de lit/ serviettes de bain/ tapis de bain/ torchons)</li>
+                    <li>Mise à disposition de produits d’accueil : dosettes de café, thé, chocolat et sucre</li>
+                    <li>Fourniture de produits d’hygiène corporelle tout au long du séjour de vos voyageurs (gel douche, shampoing, papier hygienique)</li>
+                    <li>Fourniture de produits de petit entretien : doses de lessive, tablettes de lave-vaisselle, liquide vaisselle, éponges, essuie-tout</li>
+                </ul>
+                
+                <p>Formule unique à {{ contrat.frais_gestion }} % du prix payé par les voyageurs, frais de mise en route : {{ contrat.frais_mer }} € TTC</p>
+                
+                <h2>III-Conditions Particulières</h2>
+                <p>Bien confiés au prestataire, dont le détail figure ci-dessous :</p>
+                <ul>
+                    <li><strong>Détails du Bien :</strong></li>
+                    <li>Nature du bien : {{ contrat.bien_immo.type_bien }}</li>
+                    <li>Nom du bien : {{ contrat.bien_immo.nom }}</li>
+                    <li>Adresse du bien : {{ contrat.bien_immo.adresse }}, {{ contrat.bien_immo.code_postak }} {{ contrat.bien_immo.ville }}, France</li>
+                    <li>Surface habitable : {{ contrat.bien_immo.surface }} m²</li>
+                    <li>Nombre de pièces :  {{ contrat.bien_immo.nb_pieces }}</li>
+                    <li>Nombre de Chambres :  {{ contrat.bien_immo.nb_chambres }}</li>
+                    <li>Nombre de salles de bain :  {{ contrat.bien_immo.nb_sdb }}</li>
+                    <li>Étage du bien :  {{ contrat.bien_immo.etage }}</li>
+                    {% if contrat.bien_immo.commentaire %}
+                        <li>Commentaire :  {{ contrat.bien_immo.commentaire }}</li>
+                    {% endif %}
+                </ul>
+
+                <p><strong>Durée du contrat :</strong> Aucun engagement de durée.</p>
+                <p><strong>Modalités de résiliation :</strong> Chaque partie peut mettre fin au contrat au terme de chaque mois, en respectant un délai de préavis d’un mois, notifié par lettre recommandée avec demande d'accusé de réception.</p>
+                <p><strong>Règlement :</strong> Le Client s’acquittera du règlement mensuel des factures émises par le Prestataire par virement dans un délai de 5 jours à compter du 1er de chaque mois.</p>
+                <p><strong>Acceptation :</strong> La signature du présent contrat vaut acceptation sans réserve des conditions générales annexées.</p>
+                <p>En 2 exemplaires dont un remis au client,</p>
+                <p>Le </p>
+                <p>A </p>
+            </div>
+        </td>
+    </tr>
+
+    <!-- Signatures -->
+    <tr>
+        <td>
+            <div class="signature">
+                <h2>Signature Prestataire</h2>
+                <!-- Zone de signature pour le prestataire -->
+            </div>
+        </td>
+        <td>
+            <div class="signature">
+                <h2>Signature Client</h2>
+                <!-- Zone de signature pour le client -->
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div class="cgv-section">
+                <h3>General Terms and Conditions</h3>
+                <p>
+                  <strong>Article 1 - Scope of Application</strong>: <br>These General Terms and Conditions (hereinafter referred to as "Terms") apply to all services provided to individuals or organizations (hereinafter referred to as "the Client"). By using the service, the Client implicitly accepts these Terms. The relationship between the parties will be governed by these Terms and any Specific Terms outlined in the service agreement or contract.
+                </p>
+                <p>
+                  <strong>Article 2 - Services Offered</strong>: <br>The services covered by these Terms are those specified in the agreement signed by the Client, and may include:
+                  - Service A: Providing general assistance and tools for service creation.
+                  - Service B: Video guides or information materials for users.
+                  - Service C: Ongoing customer support or management services.
+                  - Service D: Analytics or reporting for service users, etc.
+                </p>
+                <p>
+                  <strong>Article 3 - Contract Conclusion</strong>: <br>Before any service is provided, the Client must sign a service agreement, which will lead to the subscription of the service.
+                </p>
+                <p>
+                  <strong>Article 4 - Execution Modalities</strong>: <br>4-1 Services will comply with applicable laws and regulations.<br>4-2 The service provider may subcontract certain tasks when necessary.
+                </p>
+                <p>
+                  <strong>Article 5 - Provider's Obligations</strong>: <br>The service provider commits to mobilizing all available resources to ensure the quality of the service provided, but the commitment is limited to an obligation of means.
+                </p>
+                <p>
+                  <strong>Article 6 - Client's Responsibilities</strong>: <br>6-1 The Client commits to provide all necessary information for the execution of the service and to comply with all applicable regulations.<br>6-2 The Client is responsible for the safety and insurance of their property related to the service.
+                </p>
+                <p>
+                  <strong>Article 7 - Right of Withdrawal</strong>: <br>If the contract is concluded remotely, the Client has a 14-day withdrawal period starting from the conclusion of the contract. The withdrawal must be notified to the service provider.
+                </p>
+                <p>
+                  <strong>Article 8 - Price</strong>: <br>The price of the services is defined in the agreement. Any variations in applicable tax rates will be reflected in the final price.
+                </p>
+                <p>
+                  <strong>Article 9 - Payment Terms - Late Fees</strong>: <br>9-1 Payment for services is due upon receipt of the invoice.<br>9-2 Late payments will result in additional fees or service suspension.
+                </p>
+                <p>
+                  <strong>Article 10 - Substitution - Assignment</strong>: <br>If the service provider is unable to continue, they may transfer the contract to another entity with the Client's consent.
+                </p>
+                <p>
+                  <strong>Article 11 - Termination</strong>: <br>Either party may terminate the contract with prior notice, or immediately if terms are violated.
+                </p>
+                <p>
+                  <strong>Article 12 - Duration</strong>: <br>The contract duration is specified in the agreement.
+                </p>
+                <p>
+                  <strong>Article 13 - Insurance</strong>: <br>The service provider confirms compliance with required insurance obligations.
+                </p>
+                <p>
+                  <strong>Article 14 - Liability and Warranty</strong>: <br>The service provider is liable for the proper execution of services but is not responsible for indirect damages.
+                </p>
+                <p>
+                  <strong>Article 15 - Partial Cancellation</strong>: <br>The cancellation of any clause does not affect the rest of the Terms, which remain valid.
+                </p>
+                <p>
+                  <strong>Article 16 - Penalty Clause</strong>: <br>In case of early termination by the Client, a penalty may be charged based on the services not rendered.
+                </p>
+                <p>
+                  <strong>Article 17 - Force Majeure</strong>: <br>Neither party shall be held responsible for delays or non-performance due to force majeure.
+                </p>
+                <p>
+                  <strong>Article 18 - Intellectual Property</strong>: <br>The service provider retains all intellectual property rights over materials, tools, and content provided.
+                </p>
+                <p>
+                  <strong>Article 19 - Customer Support</strong>: <br>Any correspondence or claims should be addressed to the service provider via the provided contact information.
+                </p>
+                <p>
+                  <strong>Article 20 - Personal Data</strong>: <br>The service provider processes personal data in accordance with applicable data protection regulations.
+                </p>
+                <p>
+                  <strong>Article 21 - Dispute Resolution - Governing Law</strong>: <br>These Terms are governed by the applicable local laws. In case of a dispute, the parties will attempt to reach an amicable solution before resorting to mediation or legal action.
+                </p>
+              </div>
+        </td>
+      </tr>
+</table>
+
+{% endblock %}
