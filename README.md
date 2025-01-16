@@ -1,13 +1,13 @@
-Copal Manager
+# Copal Manager
 
 Copal Manager is a web application designed to simplify contract management for a concierge service. It allows you to easily create, edit, and manage contracts for clients. The app generates a database containing client information, their real estate properties, and contract details. Additionally, it can automatically generate pre-filled contracts in PDF format to save time and improve workflow efficiency.
 
-Features
+## Features
 	•	Manage client data, real estate properties, and contracts.
 	•	Automatically generate pre-filled contracts in PDF format.
 	•	Use of SQLite as the database backend for development and production.
 
-Installation
+## Installation 
 
 1.	Clone the repository:
 
@@ -37,7 +37,7 @@ Installation
 
 The project will be accessible at http://127.0.0.1:8000.
 
-Usage
+## Usage
 	•	After running the server, visit the provided local URL to access the web app.
 	•	You can start managing clients, properties, and contracts via the admin interface or custom views.
 
@@ -45,10 +45,16 @@ Configuration
 	•	SQLite is used by default for the database. No additional configuration is needed for the database.
 	•	For production deployment, you can configure additional settings, such as enabling static file handling, using a production database, and setting DEBUG = False in settings.py.
 
-Contributing
+## API
+
+The project initially included an intention to develop a separate front-end, but due to time limitations, I couldn’t complete the front-end part. However, I coded a REST API that is available in this repository.
+
+You can find the code for the API under the api/ folder. Feel free to use it for connecting with the front-end if needed.
+
+## Contributing
 
 If you would like to contribute to this project, feel free to open an issue or submit a pull request. Contributions are always welcome!
 
-License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
