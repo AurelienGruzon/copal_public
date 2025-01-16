@@ -23,11 +23,11 @@ Copal Manager is a web application designed to simplify contract management for 
   
 3.2.a Activate virtual environment (For MacOS/Linux):
 
-		`source .env/bin/activate`  
+		source .env/bin/activate  
   
 3.2.b Activate virtual environment (For Windows):
 
-		`.env\Scripts\activate` 
+		.env\Scripts\activate 
 
 5.	Install the required dependencies:
 
